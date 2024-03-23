@@ -9,7 +9,7 @@ uploadRequest.defaults.headers['Content-Type'] = 'multipart/form-data';
 uploadRequest.defaults.transformRequest = (data, headers) => {
   const contentType = headers['Content-Type'];
 
-  if (contentType === 'application/x-www-form-urlencoded') qs.stringify(data);
+  if (contentType === 'application/x-www-form-urlencoded') return qs.stringify(data);
 
   return data;
 };

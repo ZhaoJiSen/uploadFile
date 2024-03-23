@@ -102,7 +102,7 @@ import uploadRequest from '@/api/upload';
                 return;
             }
             
-            return Promise.reject(res.codeText);
+            throw res.codeText;
             
         } catch (e) {
             alert('文件上传失败，请重试!');
