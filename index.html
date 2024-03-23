@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Upload File</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="item">
+        <h3>单一文件上传 [ Form-data ]</h3>
+        <section class="upload_box" id="upload1">
+          <!-- 还可以使用 JS 来限制大小 -->
+          <input type="file" class="upload_inp" accept=".jpg,.jpeg,.png" />
+          <div class="upload_button_box">
+            <button class="upload_button select">选择文件</button>
+            <button class="upload_button upload">上传到服务器</button>
+          </div>
+          <div class="upload_tip">只能上传 JPG / PNG / JPEG 格式的文件，大小不超过 2M</div>
+          <div class="upload_list">
+            <!-- <li>
+              <span>文件: ...</span>
+              <span><em>移除</em></span>
+            </li> -->
+          </div>
+        </section>
+      </div>
+    </div>
+  </body>
+</html>
