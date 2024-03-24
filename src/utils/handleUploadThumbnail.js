@@ -54,7 +54,7 @@ import uploadRequest from '@/api/upload';
 
       if (+res.code === 0) return alert('文件上传成功!');
 
-      return new Promise.reject(res.codeText);
+      throw res.codeText;
     } catch (e) {
       alert('文件上传失败,请重试');
     } finally {

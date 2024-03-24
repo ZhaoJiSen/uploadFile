@@ -59,7 +59,6 @@ import uploadRequest from '@/api/upload';
                 throw res.codeText;
                 
             } catch (e) {
-                console.log(e);
                 alert('文件上传失败，请重试!');
             } finally {
                 upload2_inp.value = '';
