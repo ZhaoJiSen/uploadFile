@@ -4,3 +4,4 @@ import './utils/handleUploadFormData';
 import './utils/handleUploadBase64';
 import './utils/handleUploadThumbnail';
 import './utils/handleUploadSchedule';
+import './utils/handleUploadMultiple';

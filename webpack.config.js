@@ -1,5 +1,6 @@
 const { resolve } = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   mode: 'development',
@@ -20,6 +21,7 @@ module.exports = {
   devServer: {
     port: 9527,
     open: true,
+    hot: true, // 启用HMR
     client: {
       logging: 'none'
     },
@@ -52,6 +54,9 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './index.html'
+    }),
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash].css' // 输出的CSS文件名
     })
   ]
 };
