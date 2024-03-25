@@ -1,4 +1,4 @@
-import { limitSize } from './helper/index';
+import { classControl, limitSize } from './helper/index';
 import uploadRequest from '@/api/upload';
 
 (() => {
@@ -11,43 +11,7 @@ import uploadRequest from '@/api/upload';
 
   let _file = null;
 
-  /**
-   * @Description 点击选择文件按钮，触发上传文件事件
-   * @date 2024/3/23 - 14:01:13
-   */
-  const handleSelect = () => {
-    //! 防止上传时点击
-    if (upload1_btn_select.classList.contains('disable')) return;
-    upload1_inp.click();
-  };
-
-  /**
-   * @Description 获取用户选择的文件对象
-   * @date 2024/3/23 - 14:04:43
-   * @param {Event} e
-   */
-  const handleSelectFile = e => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const approval = limitSize(file.size);
-    _file = file;
-
-    // 展示上传文件信息
-    if (approval) {
-      upload1_tip.style.display = 'none';
-      upload1_list.style.display = 'block';
-
-      upload1_list.innerHTML = `
-        <li>
-          <span>文件: ${file.name}</span>
-          <span><em>移除</em></span>
-        </li>
-      `;
-    }
-  };
-
-  const handleReset = () => {
+  const reset = () => {
     upload1_tip.style.display = 'block';
     upload1_list.style.display = 'none';
 
@@ -57,21 +21,33 @@ import uploadRequest from '@/api/upload';
     //! 由于 input 元素会记录下次选择的文件，如果下一次选择了同一个文件浏览器认为这并没有引起状态的改变，不会触发 change 事件
     upload1_inp.value = '';
   };
-
-  const handleRemove = e => {
+  const remove = e => {
     let target = e.target;
-
-    if (target.tagName === 'EM') handleReset();
+    if (target.tagName === 'EM') reset();
   };
 
-  // 按钮状态
-  const classControl = flag => {
-    if (flag) {
-      upload1_btn_upload.classList.add('loading');
-      upload1_btn_select.classList.add('disable');
-    } else {
-      upload1_btn_upload.classList.remove('loading');
-      upload1_btn_select.classList.remove('disable');
+  const openSelect = () => {
+    //! 防止上传时点击
+    if (upload1_btn_select.classList.contains('disable')) return;
+    upload1_inp.click();
+  };
+  const fileSelect = e => {
+    _file = e.target.files[0];
+    if (!_file) return;
+
+    const approval = limitSize(_file.size);
+
+    // 展示上传文件信息
+    if (approval) {
+      upload1_tip.style.display = 'none';
+      upload1_list.style.display = 'block';
+
+      upload1_list.innerHTML = `
+        <li>
+          <span>文件: ${_file.name}</span>
+          <span><em>移除</em></span>
+        </li>
+      `;
     }
   };
 
@@ -81,10 +57,8 @@ import uploadRequest from '@/api/upload';
 
     if (!_file) return alert('请选择需要上传的文件!');
 
-    classControl(true);
+    classControl(upload1_btn_upload, upload1_btn_select, true);
 
-    // 把文件上传到服务器
-    // 把选择的 File 对象基于 FormData 的格式传递给服务器
     let formData = new FormData();
     formData.append('file', _file);
     formData.append('file_name', _file.name);
@@ -92,29 +66,20 @@ import uploadRequest from '@/api/upload';
     try {
       const res = await uploadRequest.post('/upload_single', formData);
 
-      if (+res.code === 0) {
-        alert(`文件上传成功! 可以通过 ${res.servicePath} 进行访问`);
-
-        // 状态还原
-        handleReset();
-        classControl(false);
-
-        return;
-      }
-
-      throw res.codeText;
+      if (+res.code === 0) return alert(`文件上传成功! 可以通过 ${res.servicePath} 进行访问`);
+      
+      throw new Error(res.codeText);
     } catch (e) {
       alert('文件上传失败，请重试!');
+    } finally {
       // 状态还原
-      handleReset();
-      classControl(false);
+      reset();
+      classControl(upload1_btn_upload, upload1_btn_select, false);
     }
   };
-
-  upload1_btn_select.addEventListener('click', handleSelect, false);
-  upload1_inp.addEventListener('change', handleSelectFile, false);
-
-  //! 通过事件委托的方式来让 upload1_list 内部的 span 点击时触发
-  upload1_list.addEventListener('click', handleRemove, false);
+  
+  upload1_list.addEventListener('click', remove, false);            //! 通过事件委托的方式来让 upload1_list 内部的 span 点击时触发
+  upload1_inp.addEventListener('change', fileSelect, false);
+  upload1_btn_select.addEventListener('click', openSelect, false);
   upload1_btn_upload.addEventListener('click', handleUpload, false);
 })();
