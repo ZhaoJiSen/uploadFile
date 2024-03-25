@@ -5,3 +5,5 @@ import './utils/handleUploadBase64';
 import './utils/handleUploadThumbnail';
 import './utils/handleUploadSchedule';
 import './utils/handleUploadMultiple';
+import './utils/handleUploadDrag';
+import './utils/handleUploadSlice';

@@ -92,7 +92,8 @@ import uploadRequest from '@/api/upload';
       let currentSpan = currentLi ? currentLi.querySelector('span:nth-last-child(1)') : null;
 
       formData.append('file', item.file);
-      formData.append('filename', item.filename);
+      formData.append('filename', item.filename)
+      
       return uploadRequest
         .post('/upload_single', formData, {
           onUploadProgress(e) {
