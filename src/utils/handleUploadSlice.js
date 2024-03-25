@@ -102,7 +102,6 @@ import uploadRequest from '@/api/upload';
 
     for (let chunk of chunks) {
       if (uploaded.length > 0 && uploaded.includes(chunk.filename)) {
-        console.log(1);
         index++;
         upload7_value.style.width = `${(index / counter) * 100}%`;
         continue; // 跳过已上传的切片
